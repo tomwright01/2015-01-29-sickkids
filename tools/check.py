@@ -43,7 +43,7 @@ SUB_ERROR = '\t{0}\n'
 def look_for_fixme(func):
     '''Decorator to see whether a value starts with FIXME.'''
     def inner(arg):
-        if (arg is not None) and arg.lstrip().startswith('FIXME'):
+        if (arg is not None) and isinstance(arg,str) and arg.lstrip().startswith('FIXME'):
             return False
         return func(arg)
     return inner
@@ -132,6 +132,8 @@ def check_email(email):
 @look_for_fixme
 def check_eventbrite(eventbrite):
     '''A valid EventBrite key is 9 or more digits.'''
+    if not isinstance(eventbrite,str):
+        eventbrite=str(eventbrite)
     return bool(re.match(EVENTBRITE_PATTERN, eventbrite))
 
 @look_for_fixme
